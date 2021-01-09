@@ -34,6 +34,16 @@
             android:orientation="vertical"
             android:padding="10dp">
 
+            <TextView
+                android:id="@+id/Total_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="selling_price"
+                android:textColor="#4CAF50"
+                android:textSize="16dp"
+                android:visibility="visible" />
+
 
             <TextView
                 android:id="@+id/item_name"
@@ -45,15 +55,7 @@
                 android:textStyle="bold" />
 
 
-            <TextView
-                android:id="@+id/Total_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="selling_price"
-                android:textColor="#4CAF50"
-                android:textSize="16dp"
-                android:visibility="visible" />
+
 
             <TextView
 

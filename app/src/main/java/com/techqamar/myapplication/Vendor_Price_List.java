@@ -51,7 +51,7 @@ public class Vendor_Price_List extends AppCompatActivity {
     double User_Total_Price=0;
     double Avg_Total_Price=0;
     public static String ITEM_NAME="";
-    public static TextView Total_Price_toolbar_text;
+    public static TextView Total_Price_toolbar_text,avrage_total_price,user_total_price,vendor_total_price;
     private static String Table_No;
     private static String V_T_P;
     private static String U_T_P;
@@ -76,6 +76,9 @@ public class Vendor_Price_List extends AppCompatActivity {
         Intent intent = getIntent();
         email_id = intent.getStringExtra("email_id");
         Total_Price_toolbar_text = findViewById(R.id.Total_Price_toolbar_text);
+        avrage_total_price = findViewById(R.id.average_price);
+        user_total_price = findViewById(R.id.user_price);
+        vendor_total_price = findViewById(R.id.vendor_price);
         cod_online = (Button) findViewById(R.id.cod_online);
 
 //        tv_no_cards = findViewById(R.id.tv_no_cards);
@@ -135,7 +138,7 @@ public class Vendor_Price_List extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
 
-//                            System.out.println("Sever Response jsonObject response" + response);
+                            System.out.println("Sever Response jsonObject response" + response);
 
                             JSONArray jsonArray = jsonObject.getJSONArray("user");
 //                            System.out.println("Sever Response jsonArray user" + jsonArray);
@@ -159,7 +162,10 @@ public class Vendor_Price_List extends AppCompatActivity {
 
 
                             }
-                            Total_Price_toolbar_text.setText(String.valueOf (" Total Price = "+Vendor_Total_Price));
+                          //  Total_Price_toolbar_text.setText(String.valueOf (" Total Price = "+Vendor_Total_Price));
+                            avrage_total_price.setText(String.valueOf (Avg_Total_Price));
+                            user_total_price.setText(String.valueOf (User_Total_Price));
+                            vendor_total_price.setText(String.valueOf (Vendor_Total_Price));
 
 //                            DcListPojo content[] = new Gson().fromJson(jsonArray.toString(), DcListPojo[].class);
 //                            ArrayList<DcListPojo> dataList = new ArrayList<DcListPojo>(Arrays.asList(content));

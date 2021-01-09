@@ -146,7 +146,7 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
 
 
     private void getGroceryStoreDetails() {
-
+        cart_count = 0;
         mainItem_list_pojosPojoArrayList.clear();
 
 
@@ -290,12 +290,20 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
         });
 
         ImageView baged_cart = (ImageView) view.findViewById(R.id.baged_cart);
+        ImageView vender_cart = (ImageView) view.findViewById(R.id.vendor_cart);
 
         baged_cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainItemList.this, CartItemActivity.class));
                 finish();
+            }
+        });
+        vender_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainItemList.this, Vendors_Types.class));
+              //  finish();
             }
         });
         // set the pending notifications value

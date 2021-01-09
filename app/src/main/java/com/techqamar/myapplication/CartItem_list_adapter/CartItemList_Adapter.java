@@ -73,8 +73,8 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
 
     }
 
-    public CartItemList_Adapter() {
-
+    public CartItemList_Adapter(Context context) {
+        this.context = context;
 
     }
 
@@ -89,6 +89,7 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+
 
         final CartItemList_Pojo mainItem_list_pojo = mainItem_list_pojoArrayList.get(position);
 
@@ -113,7 +114,7 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                String value =charSequence.toString();
+                String value = charSequence.toString();
 
                 mainItem_list_pojoArrayList.get(position).setAdd_rate(holder.add_Rate.getText().toString());
 
@@ -129,7 +130,6 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
 //                }
 
 
-
 //                if(charSequence.toString().equals(average_price)) {
 //                    holder.add_Rate.setTextColor(Color.GREEN);
 //                }
@@ -143,16 +143,22 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
             public void afterTextChanged(Editable editable) {
 
                 Double availCredit = Double.parseDouble(average_price);
-                Double five_percent= (availCredit)/100*5;
+                Double five_percent = (availCredit) / 100 * 5;
                 System.out.println("five_percent " + five_percent);
 
                 String entrVal = editable.toString();
 
                 if (entrVal != null && !entrVal.isEmpty()) {
-                    if ((availCredit-five_percent) >= Double.parseDouble(entrVal)) {
+                    if ((availCredit - five_percent) >= Double.parseDouble(entrVal)) {
                         Toast.makeText(context, "pleas enter the same amount or up to 5% less amount  ", Toast.LENGTH_SHORT).show();
                         mainItem_list_pojoArrayList.get(position).setAdd_rate(average_price);
-                      //  holder.add_Rate.setText(entrVal.substring(0, entrVal.length() - 1));
+
+
+                        //  holder.add_Rate.setText(entrVal.substring(0, entrVal.length() - 1));
+                    }
+                    if (Double.parseDouble(average_price) < Double.parseDouble(entrVal)) {
+                        Toast.makeText(context, "pleas enter the same amount or Below Average Price  ", Toast.LENGTH_SHORT).show();
+                        holder.add_Rate.setText(entrVal.substring(0, entrVal.length() - 1));
                     } else {
 
                         mainItem_list_pojoArrayList.get(position).setAdd_rate(holder.add_Rate.getText().toString());
@@ -192,7 +198,7 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
 //                                            jsonObject.getString("message");
 
 
-                                           System.out.println("Sever Response jsonObject" + response);
+                                    System.out.println("Sever Response jsonObject" + response);
 //                                            System.out.println("Sever Response jsonObject" + jsonObject);
                                     if (jsonObject.getString("message").equals("Item Deleted Successfully")) {
                                         Toast.makeText(context, "ITEM Deleted", Toast.LENGTH_SHORT).show();
@@ -202,6 +208,10 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
                                         mainItem_list_pojoArrayList.remove(position);
                                         notifyItemRemoved(position);
                                         notifyItemRangeChanged(position, mainItem_list_pojoArrayList.size());
+                                        notifyDataSetChanged();
+                                        if (context instanceof CartItemActivity) {
+                                            ((CartItemActivity)context).getGroceryStoreDetails();
+                                        }
 
 
                                     }
@@ -249,7 +259,7 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
                     }
                 };
 
-               RequestQueue requestQueue = Volley.newRequestQueue(context);
+                RequestQueue requestQueue = Volley.newRequestQueue(context);
                 postRequest.setShouldCache(false);
                 requestQueue.add(postRequest);
             }
@@ -376,7 +386,7 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView mImageView,slash1;
+        public ImageView mImageView, slash1;
         public TextView item_name, average_price;
         public EditText add_Rate;
         Button Add_to_cart, remove_from_cart;
@@ -414,7 +424,7 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
         System.out.println("JSON" + item_list);
 
 
-        String url = String.format(Urls.STORE_ITEMS_AVG_RATE_SUBMIT,Table_No, item_list);
+        String url = String.format(Urls.STORE_ITEMS_AVG_RATE_SUBMIT, Table_No, item_list);
 
         System.out.println("Sever Response " + url);
 
@@ -488,7 +498,6 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
 
 
     }
-
 
 
 }

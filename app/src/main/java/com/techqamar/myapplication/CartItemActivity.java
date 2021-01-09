@@ -76,7 +76,6 @@ public class CartItemActivity extends AppCompatActivity {
                 // Your code to make your refresh action
                 // CallYourRefreshingMethod();
                 getGroceryStoreDetails();
-                Total_Price=0;
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -132,8 +131,9 @@ public class CartItemActivity extends AppCompatActivity {
         return Table_No;
     }
 
-    private void getGroceryStoreDetails() {
+    public void getGroceryStoreDetails() {
         cartItem_list_pojosPojoArrayList.clear();
+        Total_Price=0;
 
 
         String url = String.format(Urls.STORE_ITEMS_AVG_RATE,UserPhno);
@@ -148,11 +148,15 @@ public class CartItemActivity extends AppCompatActivity {
 
                         try {
                             JSONObject jsonObject = new JSONObject(response);
+//                            if (jsonObject.getString(response).equals("{\"error\":false,\"message\":\"Store items Returns Successfully\"}")) {
+//                                Total_Price_toolbar_text.setText(String.valueOf (" Total Price = "+"0"));
+//                            }
 
                             System.out.println("Sever Response jsonObject response" + response);
 
                             JSONArray jsonArray = jsonObject.getJSONArray("user");
                             System.out.println("Sever Response jsonArray user" + jsonArray);
+
 
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject hit = jsonArray.getJSONObject(i);
@@ -189,6 +193,7 @@ public class CartItemActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Toast.makeText(CartItemActivity.this, "List is empty Bad Response From Server", Toast.LENGTH_SHORT).show();
+                            Total_Price_toolbar_text.setText(String.valueOf (" Total Price = "+"0"));
                         }
 
 
