@@ -237,16 +237,7 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
                                     Toast.makeText(context, "Connection Timed Out", Toast.LENGTH_SHORT).show();
                                 else if (error instanceof NetworkError)
                                     Toast.makeText(context, "Bad Network Connection", Toast.LENGTH_SHORT).show();
-
-
-//                        String body = null;
-//                        try {
-//                            body = new String(error.networkResponse.data, "UTF-8");
-//                            Log.d("Error.Response", body);
-//
-//                        } catch (UnsupportedEncodingException e) {
-//                            e.printStackTrace();
-//                        }
+                                
 
                             }
                         }
