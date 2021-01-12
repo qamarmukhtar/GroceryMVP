@@ -20,11 +20,10 @@ public class Urls {
             "&total_avg_price=%s" +
             "&total_usr_price=%s" +
             "&total_vendor_price=%s" +
-            "&COD=%s" +
-            "&online=%s" +
+            "&payment=%s" +
             "&delivery_loc=%s";
     public static final String REGISTRATION = BASE_URL2 + "slide1/Registration.php?name=%s&email_id=%s&mobile_no=%s&address=%s";
-
+    public static final String DELETE_TABLE = BASE_URL2 + "slide4/remove_item_after_payment.php?t_id=%s&payment=%s";
 
 
 

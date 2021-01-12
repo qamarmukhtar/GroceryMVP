@@ -3,11 +3,13 @@ package com.techqamar.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -56,6 +58,7 @@ public class Vendor_Price_List extends AppCompatActivity {
     private static String V_T_P;
     private static String U_T_P;
     private static String A_T_P;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     Vendor_Price_List_Adapter vendor_list_adapter;
     ArrayList<Vendor_Price_List_Pojo> Vendor_Price_list_pojosPojoArrayList = new ArrayList<>();
@@ -72,6 +75,7 @@ public class Vendor_Price_List extends AppCompatActivity {
         Useraddress = sh.getString("address", "");
 
         Table_No =UserPhno;
+        mSwipeRefreshLayout = findViewById(R.id.swipe_container);
 
         Intent intent = getIntent();
         email_id = intent.getStringExtra("email_id");
@@ -80,6 +84,24 @@ public class Vendor_Price_List extends AppCompatActivity {
         user_total_price = findViewById(R.id.user_price);
         vendor_total_price = findViewById(R.id.vendor_price);
         cod_online = (Button) findViewById(R.id.cod_online);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to make your refresh action
+                // CallYourRefreshingMethod();
+                getGroceryStoreDetails();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(mSwipeRefreshLayout.isRefreshing()) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        }
+                    }
+                }, 1000);
+            }
+        });
 
 //        tv_no_cards = findViewById(R.id.tv_no_cards);
 
@@ -123,6 +145,7 @@ public class Vendor_Price_List extends AppCompatActivity {
     }
 
     private void getGroceryStoreDetails() {
+        Vendor_Price_list_pojosPojoArrayList.clear();
 
 
         String url = String.format(Urls.VENDOR_PRICE_LIST,Table_No,email_id);

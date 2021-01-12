@@ -343,7 +343,80 @@ public class Vendor_Price_List_Adapter extends RecyclerView.Adapter<Vendor_Price
 
 
         String url = String.format(Urls.CONFIRM_ORDER, UserId, ITEM_NAME
-                , A_T_P, U_T_P, V_T_P, payment_status, payment_status1, Useraddress);
+                , A_T_P, U_T_P, V_T_P, payment_status, Useraddress);
+
+        System.out.println("Sever Response " + url);
+
+        final JSONArray jsonArray = new JSONArray();
+
+
+        VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, url,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        String resultResponse = new String(response.data);
+                        System.out.println("resultResponse=" + resultResponse);
+
+                        String result = resultResponse.replace("\"", "");
+
+                        if (result.contains("Success")) {
+
+
+                            Toast.makeText(context, "Data uploaded Successfully.", Toast.LENGTH_SHORT).show();
+                            deleteTable();
+
+//                    Deliveerd();
+
+//                    dataModelArrayList.remove(position);
+//                    notifyDataSetChanged();
+
+//                    Intent ieventreport = new Intent(context, HomeScreen.class);
+//                    context.startActivity(ieventreport);
+                        } else {
+                            Toast.makeText(context, "Please check All info Carefully and try again.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }, new VolleyMultipartRequest.VolleyProgressListener() {
+            @Override
+            public void onProgressUpdate(long progress) {
+
+            }
+        }) {
+
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+
+//                params.put("cust_id", "3");
+//                params.put("item_name", "Toor Dal 1kg, Red Lobia/ Alasandi Kalu 1kg, Toor Dal 1kg,Toor Dal 1kg, Red Lobia/ Alasandi Kalu 1kg, Toor Dal 1kg,Toor Dal 1kg, Red Lobia/ Alasandi Kalu 1kg, Toor Dal 1kg,Toor Dal 1kg, Red Lobia/ Alasandi Kalu 1kg, Toor Dal 1kg,");
+//                params.put("total_avg_price", "1659.65");
+//                params.put("total_usr_price", "6548.65");
+//                params.put("total_vendor_price", "9584.36");
+//                params.put("COD", "0");
+//                params.put("online", "1");
+//                params.put("delivery_loc", "K E Board High Scholl Kill Dharwad");
+
+                return params;
+
+            }
+        };
+
+        requestQueue = Volley.newRequestQueue(Vendor_Price_List_Adapter.this.context);
+        requestQueue.add(multipartRequest);
+
+
+    }
+
+
+    private void deleteTable() {
+
+        String url = String.format(Urls.DELETE_TABLE, Table_No, payment_status);
 
         System.out.println("Sever Response " + url);
 
@@ -411,6 +484,4 @@ public class Vendor_Price_List_Adapter extends RecyclerView.Adapter<Vendor_Price
 
 
     }
-
-
 }

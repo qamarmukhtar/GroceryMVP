@@ -57,7 +57,7 @@ public class Vendors_Types extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grocery__stores);
         TextView textView = findViewById(R.id.Category_toolbar_text);
-        textView.setText("Vendor List");
+        textView.setText("Supplier List");
         SharedPreferences sh = Vendors_Types.this.getSharedPreferences("profiledata", Context.MODE_PRIVATE);
         Username = sh.getString("username", "");
         UserPhno = sh.getString("phoneno", "");
