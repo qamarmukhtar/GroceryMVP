@@ -112,9 +112,6 @@ public class MainItemList_Adapter extends RecyclerView.Adapter<MainItemList_Adap
 //                        Add_Product(mainItem_list_pojoArrayList.get(position).get_id());
 
 
-
-
-
                         String url = String.format(Urls.STORE_ITEMS_ADD, holder.product_id, Table_No);
 
                         System.out.println("Sever Response add " + url);

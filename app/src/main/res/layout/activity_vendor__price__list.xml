@@ -141,7 +141,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:fontFamily="@font/roboto_regular"
-                        android:text="Total Your Price"
+                        android:text="Total User Price"
                         android:textColor="#EE6A90B5"
                         android:textSize="14dp" />
                 </LinearLayout>

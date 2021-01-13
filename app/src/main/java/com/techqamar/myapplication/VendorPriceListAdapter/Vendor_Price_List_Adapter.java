@@ -242,12 +242,13 @@ public class Vendor_Price_List_Adapter extends RecyclerView.Adapter<Vendor_Price
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (Flag[0] == "COD") {
+
                     payment_status = "0";
                     uploadToServer();
 //                    Toast.makeText(Order_Details.this, "Clicked on COD payment", Toast.LENGTH_LONG).show();
 
                 } else {
-                    payment_status1 = "1";
+                    payment_status = "1";
                     uploadToServer();
 //                    Toast.makeText(Order_Details.this, "Clicked on Online payment OK", Toast.LENGTH_LONG).show();
                 }

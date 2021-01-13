@@ -9,14 +9,19 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.GroceryMVP"
-        android:networkSecurityConfig="@xml/network_security_config">
-        <activity android:name=".sample">
+        android:theme="@style/Theme.GroceryMVP">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/Theme.GroceryMVP.NoActionBar">
 
         </activity>
-        <!-- android:usesCleartextTraffic="true" -->
+        <activity android:name=".sample">
+
+        </activity> <!-- android:usesCleartextTraffic="true" -->
         <!-- tools:ignore="GoogleAppIndexingWarning"> -->
         <!-- <uses-library -->
         <!-- android:name="org.apache.http.legacy" -->
@@ -28,7 +33,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainItemList">
+        <activity android:name=".MainItemList"
+            android:theme="@style/AppTheme.NoActionBar">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -40,13 +46,13 @@
         <!-- </activity> -->
         <activity
             android:name=".CartItemActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Vendors_Types"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Vendor_Price_List"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

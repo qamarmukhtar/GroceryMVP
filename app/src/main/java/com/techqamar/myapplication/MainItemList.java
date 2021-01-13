@@ -1,7 +1,11 @@
 package com.techqamar.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -9,6 +13,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -29,6 +34,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.techqamar.myapplication.CommonUtils.Urls;
@@ -45,7 +51,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainItemList extends AppCompatActivity implements AddorRemoveCallbacks {
+public class MainItemList extends AppCompatActivity implements AddorRemoveCallbacks, NavigationView.OnNavigationItemSelectedListener {
 
     RecyclerView recyclerView;
     ImageView imgBackButton;
@@ -66,13 +72,27 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
 
     MainItemList_Adapter mainItem_list_adapter;
     ArrayList<MainItemList_Pojo> mainItem_list_pojosPojoArrayList = new ArrayList<>();
-
+    private AppBarConfiguration mAppBarConfiguration;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
 //        TextView textView = findViewById(R.id.Category_toolbar_text);
 //        textView.setText("Milk Packets");
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        View hView =  navigationView.getHeaderView(0);
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+//        mAppBarConfiguration = new AppBarConfiguration.Builder(
+//                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+//                .setDrawerLayout(drawer)
+//                .build();
+
 
         SharedPreferences sh = MainItemList.this.getSharedPreferences("profiledata", Context.MODE_PRIVATE);
         Username = sh.getString("username", "");
@@ -142,6 +162,32 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
 
     public static String table_no() {
         return Table_No;
+    }
+
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_home) {
+            // Handle the camera action
+            startActivity( new Intent(MainItemList.this, MainItemList.class));
+
+        }
+        else if (id == R.id.nav_cart) {
+            startActivity(new Intent(MainItemList.this, CartItemActivity.class));
+
+        }
+        else if (id == R.id.nav_vendor) {
+            startActivity(new Intent(MainItemList.this, Vendors_Types.class));
+
+        }
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
 
@@ -313,7 +359,8 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
         return super.onCreateOptionsMenu(menu);
     }
 
-    // 8884718205
+    //
+
 
     @Override
     public void onAddProduct() {
