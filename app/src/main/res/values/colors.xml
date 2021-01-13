@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>D
     <color name="light_white">#D3E3DBDB</color>D
     <color name="green">#0CED15</color>D
+    <color name="colorAccent">#FFFFFF</color>
 
 
     <!--colors for light mode-->
