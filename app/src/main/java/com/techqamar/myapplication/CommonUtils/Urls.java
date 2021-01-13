@@ -14,6 +14,7 @@ public class Urls {
     public static final String STORE_ITEMS_AVG_RATE_SUBMIT = BASE_URL2 + "slide2/updating_usr_price.php?c_id=%s&price_id=%s";
     public static final String VENDOR_ITEMS_AVG_RATE_SUBMIT = BASE_URL2 + "slide3/ven123frm_admin.php?t_id=%s";
     public static final String VENDOR_PRICE_LIST = BASE_URL2 + "slide3/showig_vendor_details.php?t_id=%s&mail=%s";
+    public static final String ORDERED_LIST = BASE_URL2 + "slide3/showig_vendor_details.php?t_id=%s&mail=%s";
     public static final String CONFIRM_ORDER = BASE_URL2 + "slide4/tbl_history.php?" +
             "cust_id=%s" +
             "&item_name=%s" +

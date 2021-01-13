@@ -182,6 +182,9 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
         else if (id == R.id.nav_vendor) {
             startActivity(new Intent(MainItemList.this, Vendors_Types.class));
 
+        } else if (id == R.id.nav_ordered) {
+            startActivity(new Intent(MainItemList.this, Ordered_List.class));
+
         }
 
 
