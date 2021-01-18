@@ -48,12 +48,12 @@ public class Vendor_Price_List extends AppCompatActivity {
     public static String Username, UserPhno, Useremail, UserId, Useraddress;
     public static Button cod_online;
 
-    String email_id;
-    double Vendor_Total_Price=0;
-    double User_Total_Price=0;
-    double Avg_Total_Price=0;
-    public static String ITEM_NAME="";
-    public static TextView Total_Price_toolbar_text,avrage_total_price,user_total_price,vendor_total_price;
+    public static String email_id, store_id;
+    double Vendor_Total_Price = 0;
+    double User_Total_Price = 0;
+    double Avg_Total_Price = 0;
+    public static String ITEM_NAME = "";
+    public static TextView Total_Price_toolbar_text, avrage_total_price, user_total_price, vendor_total_price;
     private static String Table_No;
     private static String V_T_P;
     private static String U_T_P;
@@ -74,11 +74,13 @@ public class Vendor_Price_List extends AppCompatActivity {
         UserId = sh.getString("id", "");
         Useraddress = sh.getString("address", "");
 
-        Table_No =UserPhno;
+        Table_No = UserPhno;
         mSwipeRefreshLayout = findViewById(R.id.swipe_container);
 
         Intent intent = getIntent();
         email_id = intent.getStringExtra("email_id");
+        store_id = intent.getStringExtra("store_id");
+
         Total_Price_toolbar_text = findViewById(R.id.Total_Price_toolbar_text);
         avrage_total_price = findViewById(R.id.average_price);
         user_total_price = findViewById(R.id.user_price);
@@ -95,7 +97,7 @@ public class Vendor_Price_List extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(mSwipeRefreshLayout.isRefreshing()) {
+                        if (mSwipeRefreshLayout.isRefreshing()) {
                             mSwipeRefreshLayout.setRefreshing(false);
                         }
                     }
@@ -104,8 +106,6 @@ public class Vendor_Price_List extends AppCompatActivity {
         });
 
 //        tv_no_cards = findViewById(R.id.tv_no_cards);
-
-
 
 
 //        new CheckInternetConnection(this).checkConnection();
@@ -144,11 +144,19 @@ public class Vendor_Price_List extends AppCompatActivity {
         return Table_No;
     }
 
+    public static String store_id() {
+        return store_id;
+    }
+
+    public static String email_id() {
+        return email_id;
+    }
+
     private void getGroceryStoreDetails() {
         Vendor_Price_list_pojosPojoArrayList.clear();
 
 
-        String url = String.format(Urls.VENDOR_PRICE_LIST,Table_No,email_id);
+        String url = String.format(Urls.VENDOR_PRICE_LIST, Table_No, email_id);
 
         System.out.println("Sever Response " + url);
 
@@ -174,21 +182,21 @@ public class Vendor_Price_List extends AppCompatActivity {
                                 String item_name = hit.getString("item_name");
                                 System.out.println("avg_price" + vendor_price);
                                 Vendor_Total_Price = Vendor_Total_Price + Double.parseDouble(vendor_price);
-                                V_T_P=Double. toString(Vendor_Total_Price);
+                                V_T_P = Double.toString(Vendor_Total_Price);
                                 User_Total_Price = User_Total_Price + Double.parseDouble(user_price);
-                                U_T_P=Double. toString(User_Total_Price);
+                                U_T_P = Double.toString(User_Total_Price);
                                 Avg_Total_Price = Avg_Total_Price + Double.parseDouble(avg_price);
-                                A_T_P=Double. toString(Avg_Total_Price);
+                                A_T_P = Double.toString(Avg_Total_Price);
 
-                                ITEM_NAME = ITEM_NAME+","+item_name;
+                                ITEM_NAME = ITEM_NAME + "," + item_name;
                                 System.out.println("avg_price" + ITEM_NAME);
 
 
                             }
-                          //  Total_Price_toolbar_text.setText(String.valueOf (" Total Price = "+Vendor_Total_Price));
-                            avrage_total_price.setText(String.valueOf (Avg_Total_Price));
-                            user_total_price.setText(String.valueOf (User_Total_Price));
-                            vendor_total_price.setText(String.valueOf (Vendor_Total_Price));
+                            //  Total_Price_toolbar_text.setText(String.valueOf (" Total Price = "+Vendor_Total_Price));
+                            avrage_total_price.setText(String.valueOf(Avg_Total_Price));
+                            user_total_price.setText(String.valueOf(User_Total_Price));
+                            vendor_total_price.setText(String.valueOf(Vendor_Total_Price));
 
 //                            DcListPojo content[] = new Gson().fromJson(jsonArray.toString(), DcListPojo[].class);
 //                            ArrayList<DcListPojo> dataList = new ArrayList<DcListPojo>(Arrays.asList(content));
@@ -253,8 +261,6 @@ public class Vendor_Price_List extends AppCompatActivity {
         };
 
 
-
-
         requestQueue = Volley.newRequestQueue(Vendor_Price_List.this);
         requestQueue.add(postRequest);
 
@@ -264,19 +270,24 @@ public class Vendor_Price_List extends AppCompatActivity {
     public static String v_t_p() {
         return V_T_P;
     }
+
     public static String u_t_p() {
         return U_T_P;
     }
+
     public static String a_t_p() {
         return A_T_P;
     }
+
     public static String item_name() {
         return ITEM_NAME;
     }
-   public static String user_address() {
+
+    public static String user_address() {
         return Useraddress;
     }
-   public static String user_id() {
+
+    public static String user_id() {
         return UserId;
     }
 

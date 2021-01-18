@@ -1,6 +1,7 @@
 package com.techqamar.myapplication.CartItem_list_adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -335,7 +336,7 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
 
                 System.out.println("product List in json" + new Gson().toJson(add_rate_listPojo));
 
-                if (callServer && mainItem_list_pojoArrayList.size() > 3) {
+                if (callServer && mainItem_list_pojoArrayList.size() > 2) {
 
                     //call server API here
                     uploadToServer(add_rate_listPojo);
@@ -441,8 +442,8 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
 //                    dataModelArrayList.remove(position);
 //                    notifyDataSetChanged();
 
-//                    Intent ieventreport = new Intent(context, HomeScreen.class);
-//                    context.startActivity(ieventreport);
+                    Intent ieventreport = new Intent(context, MainItemList.class);
+                    context.startActivity(ieventreport);
                         } else {
                             Toast.makeText(context, "Please check All info Carefully and try again.", Toast.LENGTH_SHORT).show();
                         }

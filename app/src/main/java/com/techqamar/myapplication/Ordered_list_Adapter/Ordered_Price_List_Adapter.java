@@ -2,6 +2,7 @@ package com.techqamar.myapplication.Ordered_list_Adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.squareup.picasso.Picasso;
 import com.techqamar.myapplication.CartItem_list_adapter.Add_Rate_ListPojo;
 import com.techqamar.myapplication.CommonUtils.Urls;
 import com.techqamar.myapplication.CommonUtils.VolleyMultipartRequest;
+import com.techqamar.myapplication.Ordered_Item_List;
 import com.techqamar.myapplication.R;
 import com.techqamar.myapplication.VendorPriceListAdapter.Vendor_Price_List_Adapter;
 import com.techqamar.myapplication.VendorPriceListAdapter.Vendor_Price_List_Pojo;
@@ -69,7 +71,7 @@ public class Ordered_Price_List_Adapter extends RecyclerView.Adapter<Ordered_Pri
     @Override
     public Ordered_Price_List_Adapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         this.context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.item_list, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.order_list_item, parent, false);
         return new Ordered_Price_List_Adapter.ViewHolder(view);
     }
 
@@ -85,8 +87,8 @@ public class Ordered_Price_List_Adapter extends RecyclerView.Adapter<Ordered_Pri
         final String imageUrl = vendor_list_pojo.getmImageUrl();
 
         holder.item_name.setText(name);
-        holder.average_price.setText(date);
-        holder.user_price.setText(location);
+        holder.date.setText(date);
+        holder.location.setText(location);
         Picasso.get().load(imageUrl).fit().centerInside().into(holder.mImageView);
 
 
@@ -94,13 +96,15 @@ public class Ordered_Price_List_Adapter extends RecyclerView.Adapter<Ordered_Pri
         holder.viewitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(context, Order_Details.class);
-//                intent.putExtra("selling_price",selling_price);
+                Intent intent = new Intent(context, Ordered_Item_List.class);
+                String DATE = date.replaceAll("[^0-9]","");
+                System.out.println("date replase"+DATE);
+                intent.putExtra("date",DATE);
 //                intent.putExtra("actual_price",actual_price);
 //                intent.putExtra("item_name",item_name);
 //                intent.putExtra("s_id",s_id);
 //                intent.putExtra("image_url", Uri.parse(imageUrl));
-//                context.startActivity(intent);
+                context.startActivity(intent);
             }
         });
 
@@ -130,33 +134,17 @@ public class Ordered_Price_List_Adapter extends RecyclerView.Adapter<Ordered_Pri
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView mImageView, slash1, slash2;
-        public TextView item_name, average_price, vendor_price, user_price;
-        public EditText add_Rate;
-        Button Add_to_cart;
+        public ImageView mImageView;
+        public TextView item_name, location, date;
         View viewitem;
-        LinearLayout average_price_liner, vendor_price_liner;
 
         public ViewHolder(View itemView) {
             super(itemView);
             viewitem = itemView;
-
             mImageView = itemView.findViewById(R.id.image_cartlist);
-            slash1 = itemView.findViewById(R.id.slash1);
-            slash1.setVisibility(View.VISIBLE);
-            slash2 = itemView.findViewById(R.id.slash2);
-            slash2.setVisibility(View.VISIBLE);
             item_name = itemView.findViewById(R.id.item_name);
-            vendor_price = itemView.findViewById(R.id.vendor_price);
-            vendor_price.setVisibility(View.VISIBLE);
-            user_price = itemView.findViewById(R.id.user_price);
-            user_price.setVisibility(View.VISIBLE);
-            average_price = itemView.findViewById(R.id.average_price);
-            average_price_liner = itemView.findViewById(R.id.average_price_liner);
-            average_price_liner.setVisibility(View.VISIBLE);
-            vendor_price_liner = itemView.findViewById(R.id.vendor_price_liner);
-            vendor_price_liner.setVisibility(View.VISIBLE);
-
+            location = itemView.findViewById(R.id.average_price);
+            date = itemView.findViewById(R.id.user_price);
 
         }
     }

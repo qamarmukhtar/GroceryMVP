@@ -14,7 +14,8 @@ public class Urls {
     public static final String STORE_ITEMS_AVG_RATE_SUBMIT = BASE_URL2 + "slide2/updating_usr_price.php?c_id=%s&price_id=%s";
     public static final String VENDOR_ITEMS_AVG_RATE_SUBMIT = BASE_URL2 + "slide3/ven123frm_admin.php?t_id=%s";
     public static final String VENDOR_PRICE_LIST = BASE_URL2 + "slide3/showig_vendor_details.php?t_id=%s&mail=%s";
-    public static final String ORDERED_LIST = BASE_URL2 + "slide3/showig_vendor_details.php?t_id=%s&mail=%s";
+    public static final String ORDERED_LIST = BASE_URL2 + "slide5/order_history_according_to_date.php?cust_id=%s";
+    public static final String ORDERED_ITEM_LIST = BASE_URL2 + "slide5/order_history_by_date.php?cust_id=%s&date=%s";
     public static final String CONFIRM_ORDER = BASE_URL2 + "slide4/tbl_history.php?" +
             "cust_id=%s" +
             "&item_name=%s" +
@@ -23,8 +24,12 @@ public class Urls {
             "&total_vendor_price=%s" +
             "&payment=%s" +
             "&delivery_loc=%s";
-    public static final String REGISTRATION = BASE_URL2 + "slide1/Registration.php?name=%s&email_id=%s&mobile_no=%s&address=%s";
+    public static final String REGISTRATION = BASE_URL2 + "slide1/Registration.php?name=%s&email_id=%s&mobile_no=%s&address=%s&city=%s";
     public static final String DELETE_TABLE = BASE_URL2 + "slide4/remove_item_after_payment.php?t_id=%s&payment=%s";
+    public static final String EMAIL_SEND = BASE_URL2 + "slide4/admin_mail.php?user_id=%s&store_id=%s&pk_id=%s";
+    public static final String ORDER_HISTORY = BASE_URL2 + "slide5/dumping_items_to_order.php?cust_id=%s&store_id=%s&tbl_id=%s";
+    public static final String ORDER_HISTORY_VENDOR_PRICE_UPDATE = BASE_URL2 + "slide5/vendor_price_from_temp.php?cust_id=%s&store_id=%s&tbl_id=%s&mail=%s&date=%s";
+
 
 
 

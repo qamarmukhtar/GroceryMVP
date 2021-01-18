@@ -26,8 +26,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.techqamar.myapplication.CommonUtils.Urls;
-import com.techqamar.myapplication.Ordered_list_Adapter.Ordered_Price_List_Adapter;
-import com.techqamar.myapplication.Ordered_list_Adapter.Ordered_Price_List_Pojo;
+import com.techqamar.myapplication.Ordered_Item_List_Adapter.Ordered_Item_List_Adapter;
+import com.techqamar.myapplication.Ordered_Item_List_Adapter.Ordered_Item_List_Pojo;
 import com.techqamar.myapplication.VendorPriceListAdapter.Vendor_Price_List_Adapter;
 import com.techqamar.myapplication.VendorPriceListAdapter.Vendor_Price_List_Pojo;
 
@@ -40,22 +40,33 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Ordered_List extends AppCompatActivity {
+public class Ordered_Item_List extends AppCompatActivity {
 
     RecyclerView recyclerView;
+    ImageView imgBackButton;
     RequestQueue requestQueue;
     public static String Username, UserPhno, Useremail, UserId, Useraddress;
+    public static Button cod_online;
 
-    String email_id;
+    public static String email_id, store_id,date;
+    double Vendor_Total_Price = 0;
+    double User_Total_Price = 0;
+    double Avg_Total_Price = 0;
+    public static String ITEM_NAME = "";
+    public static TextView Total_Price_toolbar_text, avrage_total_price, user_total_price, vendor_total_price;
+    private static String Table_No;
+    private static String V_T_P;
+    private static String U_T_P;
+    private static String A_T_P;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    Ordered_Price_List_Adapter ordered_list_adapter;
-    ArrayList<Ordered_Price_List_Pojo> ordered_Price_list_pojosPojoArrayList = new ArrayList<>();
+    Ordered_Item_List_Adapter ordered_Item_list_adapter;
+    ArrayList<Ordered_Item_List_Pojo> ordered_Item_list_pojosPojoArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ordered__list);
+        setContentView(R.layout.activity_ordered__item__list);
         SharedPreferences sh = this.getSharedPreferences("profiledata", Context.MODE_PRIVATE);
         Username = sh.getString("username", "");
         UserPhno = sh.getString("phoneno", "");
@@ -63,13 +74,19 @@ public class Ordered_List extends AppCompatActivity {
         UserId = sh.getString("id", "");
         Useraddress = sh.getString("address", "");
 
-
+        Table_No = UserPhno;
         mSwipeRefreshLayout = findViewById(R.id.swipe_container);
 
         Intent intent = getIntent();
         email_id = intent.getStringExtra("email_id");
+        store_id = intent.getStringExtra("store_id");
+        date = intent.getStringExtra("date");
 
-
+        Total_Price_toolbar_text = findViewById(R.id.Total_Price_toolbar_text);
+        avrage_total_price = findViewById(R.id.average_price);
+        user_total_price = findViewById(R.id.user_price);
+        vendor_total_price = findViewById(R.id.vendor_price);
+        cod_online = (Button) findViewById(R.id.cod_online);
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -81,7 +98,7 @@ public class Ordered_List extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(mSwipeRefreshLayout.isRefreshing()) {
+                        if (mSwipeRefreshLayout.isRefreshing()) {
                             mSwipeRefreshLayout.setRefreshing(false);
                         }
                     }
@@ -90,8 +107,6 @@ public class Ordered_List extends AppCompatActivity {
         });
 
 //        tv_no_cards = findViewById(R.id.tv_no_cards);
-
-
 
 
 //        new CheckInternetConnection(this).checkConnection();
@@ -103,7 +118,7 @@ public class Ordered_List extends AppCompatActivity {
 //        });
 
 
-        ordered_list_adapter = new Ordered_Price_List_Adapter(ordered_Price_list_pojosPojoArrayList, new Ordered_Price_List_Adapter.OnInvoiceOptionclicked() {
+        ordered_Item_list_adapter = new Ordered_Item_List_Adapter(ordered_Item_list_pojosPojoArrayList, new Ordered_Item_List_Adapter.OnInvoiceOptionclicked() {
 //            @Override
 //            public void onPayOptionClicked(MainItemList_Pojo invoiceListPojo) {
 //
@@ -118,21 +133,31 @@ public class Ordered_List extends AppCompatActivity {
         });
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Ordered_List.this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Ordered_Item_List.this);
         recyclerView.setFocusable(false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(ordered_list_adapter);
+        recyclerView.setAdapter(ordered_Item_list_adapter);
 
         getGroceryStoreDetails();
     }
 
+    public static String table_no() {
+        return Table_No;
+    }
 
+    public static String store_id() {
+        return store_id;
+    }
+
+    public static String email_id() {
+        return email_id;
+    }
 
     private void getGroceryStoreDetails() {
-        ordered_Price_list_pojosPojoArrayList.clear();
+        ordered_Item_list_pojosPojoArrayList.clear();
 
 
-        String url = String.format(Urls.ORDERED_LIST,UserId);
+        String url = String.format(Urls.ORDERED_ITEM_LIST, UserId, date);
 
         System.out.println("Sever Response " + url);
 
@@ -156,21 +181,36 @@ public class Ordered_List extends AppCompatActivity {
 //                                String user_price = hit.getString("user_price");
 //                                String avg_price = hit.getString("avg_price");
 //                                String item_name = hit.getString("item_name");
+//                                System.out.println("avg_price" + vendor_price);
+//                                Vendor_Total_Price = Vendor_Total_Price + Double.parseDouble(vendor_price);
+//                                V_T_P = Double.toString(Vendor_Total_Price);
+//                                User_Total_Price = User_Total_Price + Double.parseDouble(user_price);
+//                                U_T_P = Double.toString(User_Total_Price);
+//                                Avg_Total_Price = Avg_Total_Price + Double.parseDouble(avg_price);
+//                                A_T_P = Double.toString(Avg_Total_Price);
+//
+//                                ITEM_NAME = ITEM_NAME + "," + item_name;
+//                                System.out.println("avg_price" + ITEM_NAME);
+//
 //
 //                            }
+                            //  Total_Price_toolbar_text.setText(String.valueOf (" Total Price = "+Vendor_Total_Price));
+//                            avrage_total_price.setText(String.valueOf(Avg_Total_Price));
+//                            user_total_price.setText(String.valueOf(User_Total_Price));
+//                            vendor_total_price.setText(String.valueOf(Vendor_Total_Price));
 
 //                            DcListPojo content[] = new Gson().fromJson(jsonArray.toString(), DcListPojo[].class);
 //                            ArrayList<DcListPojo> dataList = new ArrayList<DcListPojo>(Arrays.asList(content));
-                            Ordered_Price_List_Pojo content[] = new Gson().fromJson(jsonArray.toString(), Ordered_Price_List_Pojo[].class);
-                            ArrayList<Ordered_Price_List_Pojo> dataList = new ArrayList<Ordered_Price_List_Pojo>(Arrays.asList(content));
+                            Ordered_Item_List_Pojo content[] = new Gson().fromJson(jsonArray.toString(), Ordered_Item_List_Pojo[].class);
+                            ArrayList<Ordered_Item_List_Pojo> dataList = new ArrayList<Ordered_Item_List_Pojo>(Arrays.asList(content));
 
-                            ordered_Price_list_pojosPojoArrayList.addAll(dataList);
+                            ordered_Item_list_pojosPojoArrayList.addAll(dataList);
 
-                            ordered_list_adapter.notifyDataSetChanged();
+                            ordered_Item_list_adapter.notifyDataSetChanged();
 
-                            if (ordered_Price_list_pojosPojoArrayList.size() == 0) {
+                            if (ordered_Item_list_pojosPojoArrayList.size() == 0) {
 
-                                Toast.makeText(Ordered_List.this, "List is empty", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Ordered_Item_List.this, "List is empty", Toast.LENGTH_SHORT).show();
 
 //                                tv_no_cards.setVisibility(View.VISIBLE);
 
@@ -183,7 +223,7 @@ public class Ordered_List extends AppCompatActivity {
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(Ordered_List.this, "Bad Response From Server", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Ordered_Item_List.this, "Bad Response From Server", Toast.LENGTH_SHORT).show();
                         }
 
 
@@ -194,11 +234,11 @@ public class Ordered_List extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
 
                         if (error instanceof ServerError)
-                            Toast.makeText(Ordered_List.this, "Server Error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Ordered_Item_List.this, "Server Error", Toast.LENGTH_SHORT).show();
                         else if (error instanceof TimeoutError)
-                            Toast.makeText(Ordered_List.this, "Connection Timed Out", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Ordered_Item_List.this, "Connection Timed Out", Toast.LENGTH_SHORT).show();
                         else if (error instanceof NetworkError)
-                            Toast.makeText(Ordered_List.this, "Bad Network Connection", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Ordered_Item_List.this, "Bad Network Connection", Toast.LENGTH_SHORT).show();
 
 
 //                        String body = null;
@@ -222,14 +262,34 @@ public class Ordered_List extends AppCompatActivity {
         };
 
 
-
-
-        requestQueue = Volley.newRequestQueue(Ordered_List.this);
+        requestQueue = Volley.newRequestQueue(Ordered_Item_List.this);
         requestQueue.add(postRequest);
 
 
     }
 
+    public static String v_t_p() {
+        return V_T_P;
+    }
 
+    public static String u_t_p() {
+        return U_T_P;
+    }
+
+    public static String a_t_p() {
+        return A_T_P;
+    }
+
+    public static String item_name() {
+        return ITEM_NAME;
+    }
+
+    public static String user_address() {
+        return Useraddress;
+    }
+
+    public static String user_id() {
+        return UserId;
+    }
 
 }

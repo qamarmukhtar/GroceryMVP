@@ -22,13 +22,13 @@ import java.util.ArrayList;
 
 public class Vendors_TypeListRecViewAdapter extends RecyclerView.Adapter<Vendors_TypeListRecViewAdapter.ViewHolder> {
 
-    private ArrayList<Vendors_TypeListPojo> milkTypeListPojoArrayList;
+    private ArrayList<Vendors_TypeListPojo> vendors_TypeListPojoArrayList;
     private Context context;
     private OnInvoiceOptionclicked onInvoiceOptionclicked;
     RequestOptions option;
 
     public Vendors_TypeListRecViewAdapter(ArrayList<Vendors_TypeListPojo> d, OnInvoiceOptionclicked onInvoiceOptionclicked) {
-        this.milkTypeListPojoArrayList = d;
+        this.vendors_TypeListPojoArrayList = d;
         this.onInvoiceOptionclicked = onInvoiceOptionclicked;
 
         // Request option for Glide
@@ -51,12 +51,13 @@ public class Vendors_TypeListRecViewAdapter extends RecyclerView.Adapter<Vendors
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
-        final Vendors_TypeListPojo milkTypeListPojo = milkTypeListPojoArrayList.get(position);
+        final Vendors_TypeListPojo vendors_typeListPojo = vendors_TypeListPojoArrayList.get(position);
 
-        final String getname = milkTypeListPojo.getName();
-        final String getemail = milkTypeListPojo.getEmail_id();
-        final String getsum = milkTypeListPojo.getSum();
-        final String imageUrl = milkTypeListPojo.getLogo();
+        final String getname = vendors_typeListPojo.getName();
+        final String getemail = vendors_typeListPojo.getEmail_id();
+        final String getsum = vendors_typeListPojo.getSum();
+        final String imageUrl = vendors_typeListPojo.getLogo();
+        final String store_id = vendors_typeListPojo.getStore_id();
 
         holder.item_name.setText(getname);
         holder.Total_price.setText("Total Price " + getsum);
@@ -67,8 +68,9 @@ public class Vendors_TypeListRecViewAdapter extends RecyclerView.Adapter<Vendors
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, Vendor_Price_List.class);
-                intent.putExtra("email_id",milkTypeListPojo.getEmail_id());
-                System.out.println("EMAIL ID"+milkTypeListPojo.getEmail_id());
+                intent.putExtra("email_id",vendors_typeListPojo.getEmail_id());
+                intent.putExtra("store_id",vendors_typeListPojo.getStore_id());
+                System.out.println("EMAIL ID"+vendors_typeListPojo.getEmail_id());
 
 //                intent.putExtra("actual_price",actual_price);
 //                intent.putExtra("item_name",item_name);
@@ -83,7 +85,7 @@ public class Vendors_TypeListRecViewAdapter extends RecyclerView.Adapter<Vendors
 
     @Override
     public int getItemCount() {
-        return milkTypeListPojoArrayList.size();
+        return vendors_TypeListPojoArrayList.size();
     }
 
 

@@ -1,9 +1,12 @@
 package com.techqamar.myapplication.VendorPriceListAdapter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +20,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.NetworkError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
@@ -31,12 +38,18 @@ import com.techqamar.myapplication.CartItem_list_adapter.Add_Rate_ListPojo;
 import com.techqamar.myapplication.CartItem_list_adapter.CartItemList_Adapter;
 import com.techqamar.myapplication.CommonUtils.Urls;
 import com.techqamar.myapplication.CommonUtils.VolleyMultipartRequest;
+import com.techqamar.myapplication.MainItemList;
 import com.techqamar.myapplication.R;
 import com.techqamar.myapplication.Vendor_Price_List;
+import com.techqamar.myapplication.Vendors_TypeListRecViewAdapter.Vendors_TypeListPojo;
+import com.techqamar.myapplication.Vendors_Types;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,13 +64,15 @@ public class Vendor_Price_List_Adapter extends RecyclerView.Adapter<Vendor_Price
     RequestOptions option;
     RequestQueue requestQueue;
     String ADD_RATE;
-    String Table_No;
+    String Table_No, store_id, email_id, compare_string;
     String V_T_P;
     String U_T_P;
     String A_T_P;
     String ITEM_NAME;
     String UserAddress;
     String UserID;
+    String DATE;
+    String pkid;
 
     String payment_status = "";
     String payment_status1 = "";
@@ -69,6 +84,8 @@ public class Vendor_Price_List_Adapter extends RecyclerView.Adapter<Vendor_Price
         // Request option for Glide
         option = new RequestOptions().centerCrop().placeholder(R.drawable.loading_shape).error(R.drawable.loading_shape);
         Table_No = Vendor_Price_List.table_no().trim();
+        store_id = Vendor_Price_List.store_id().trim();
+        email_id = Vendor_Price_List.email_id().trim();
 
 
     }
@@ -337,6 +354,10 @@ public class Vendor_Price_List_Adapter extends RecyclerView.Adapter<Vendor_Price
         UserAddress = Vendor_Price_List.user_address().trim();
         UserID = Vendor_Price_List.user_id().trim();
 
+        ProgressDialog dialog = new ProgressDialog(context);
+        dialog.setMessage("Please wait.....");
+        dialog.show();
+
 
         String customerid = "25659";
 //        String item_list = new Gson().toJson(add_rate_listPojo);
@@ -355,16 +376,34 @@ public class Vendor_Price_List_Adapter extends RecyclerView.Adapter<Vendor_Price
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
+
+
                         String resultResponse = new String(response.data);
+                        //TODO pk value
+                        try {
+
+                            JSONObject result = new JSONObject(resultResponse);
+                            System.out.println("resultResponse" + result);
+                            JSONObject object = result.getJSONObject("user");
+                            String name = result.getString("user");
+                            Log.e("sever", name + " ");
+                            Log.e("object", object + " ");
+                            pkid = object.getString("pk");
+                            Log.e("pk", pkid + " ");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         System.out.println("resultResponse=" + resultResponse);
 
                         String result = resultResponse.replace("\"", "");
 
-                        if (result.contains("Success")) {
+                        if (result.contains("items Returns Successfully Inserted")) {
 
+                            dialog.dismiss();
+                            //     Toast.makeText(context, "Data uploaded Successfully.", Toast.LENGTH_SHORT).show();
 
-                            Toast.makeText(context, "Data uploaded Successfully.", Toast.LENGTH_SHORT).show();
-                            deleteTable();
+                            Order_History();
+//                            deleteTable();
 
 //                    Deliveerd();
 
@@ -415,6 +454,223 @@ public class Vendor_Price_List_Adapter extends RecyclerView.Adapter<Vendor_Price
     }
 
 
+    private void Order_History() {
+
+
+        String url = String.format(Urls.ORDER_HISTORY, UserId, store_id, Table_No);
+
+        System.out.println("Sever Response " + url);
+
+        ProgressDialog dialog = new ProgressDialog(context);
+        dialog.setMessage("Please wait.....");
+        dialog.show();
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+
+                        try {
+
+//                            JSONArray jsonArray = new JSONArray(response);
+                            System.out.println("Sever Response jsonObject" + response);
+                            JSONObject Object = new JSONObject(response);
+                            compare_string = Object.getString("user");
+                            System.out.println("compare_string" + compare_string);
+                            DATE = Object.getString("date");
+                            System.out.println("DATE" + DATE);
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(context, "Bad Response From Server", Toast.LENGTH_SHORT).show();
+                        }
+                        if (compare_string.contains("items Returns Successfully Inserted")) {
+                            dialog.dismiss();
+                            Order_History_Vendor_price_update();
+
+                        } else {
+                            Toast.makeText(context, "Order History not created.", Toast.LENGTH_SHORT).show();
+                        }
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        if (error instanceof ServerError)
+                            Toast.makeText(context, "Server Error", Toast.LENGTH_SHORT).show();
+                        else if (error instanceof TimeoutError)
+                            Toast.makeText(context, "Connection Timed Out", Toast.LENGTH_SHORT).show();
+                        else if (error instanceof NetworkError)
+                            Toast.makeText(context, "Bad Network Connection", Toast.LENGTH_SHORT).show();
+
+
+                    }
+                }
+        ) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                return params;
+            }
+        };
+        requestQueue = Volley.newRequestQueue(Vendor_Price_List_Adapter.this.context);
+        requestQueue.add(postRequest);
+
+
+    }
+
+    private void Order_History_Vendor_price_update() {
+
+
+        String url = String.format(Urls.ORDER_HISTORY_VENDOR_PRICE_UPDATE, UserId, store_id, Table_No, email_id, DATE);
+
+        System.out.println("Sever Response " + url);
+
+        ProgressDialog dialog = new ProgressDialog(context);
+        dialog.setMessage("Please wait.....");
+        dialog.show();
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+
+                        try {
+
+//                            JSONArray jsonArray = new JSONArray(response);
+                            System.out.println("Sever Response jsonObject" + response);
+                            JSONObject Object = new JSONObject(response);
+                            String compare_string = Object.getString("user");
+                            System.out.println("compare_string" + compare_string);
+
+
+                            if (compare_string.contains("Successfully updated")) {
+
+                                Toast.makeText(context, "Data uploaded Successfully.", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                                email_send();
+                                deleteTable();
+
+                            } else {
+                                Toast.makeText(context, "Vendor price Not updated.", Toast.LENGTH_SHORT).show();
+                            }
+                            dialog.dismiss();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(context, "Bad Response From Server", Toast.LENGTH_SHORT).show();
+                        }
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        if (error instanceof ServerError)
+                            Toast.makeText(context, "Server Error", Toast.LENGTH_SHORT).show();
+                        else if (error instanceof TimeoutError)
+                            Toast.makeText(context, "Connection Timed Out", Toast.LENGTH_SHORT).show();
+                        else if (error instanceof NetworkError)
+                            Toast.makeText(context, "Bad Network Connection", Toast.LENGTH_SHORT).show();
+
+
+                    }
+                }
+        ) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                return params;
+            }
+        };
+        requestQueue = Volley.newRequestQueue(Vendor_Price_List_Adapter.this.context);
+        requestQueue.add(postRequest);
+
+
+    }
+
+
+
+    private void email_send() {
+
+        String url = String.format(Urls.EMAIL_SEND, UserID, store_id,pkid);
+
+        System.out.println("Sever Response " + url);
+
+        final JSONArray jsonArray = new JSONArray();
+        ProgressDialog dialog = new ProgressDialog(context);
+        dialog.setMessage("Please wait.....");
+        dialog.show();
+
+
+        VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, url,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        String resultResponse = new String(response.data);
+                        System.out.println("resultResponse=" + resultResponse);
+
+                        String result = resultResponse.replace("\"", "");
+
+                        if (result.contains("successfully sent")) {
+
+                            dialog.dismiss();
+//
+
+
+
+                        } else {
+                            Toast.makeText(context, "Please check All info Carefully and try again.", Toast.LENGTH_SHORT).show();
+                        }
+                        dialog.dismiss();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }, new VolleyMultipartRequest.VolleyProgressListener() {
+            @Override
+            public void onProgressUpdate(long progress) {
+
+            }
+        }) {
+
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+
+//                params.put("cust_id", "3");
+//                params.put("item_name", "Toor Dal 1kg, Red Lobia/ Alasandi Kalu 1kg, Toor Dal 1kg,Toor Dal 1kg, Red Lobia/ Alasandi Kalu 1kg, Toor Dal 1kg,Toor Dal 1kg, Red Lobia/ Alasandi Kalu 1kg, Toor Dal 1kg,Toor Dal 1kg, Red Lobia/ Alasandi Kalu 1kg, Toor Dal 1kg,");
+//                params.put("total_avg_price", "1659.65");
+//                params.put("total_usr_price", "6548.65");
+//                params.put("total_vendor_price", "9584.36");
+//                params.put("COD", "0");
+//                params.put("online", "1");
+//                params.put("delivery_loc", "K E Board High Scholl Kill Dharwad");
+
+                return params;
+
+            }
+        };
+
+        requestQueue = Volley.newRequestQueue(Vendor_Price_List_Adapter.this.context);
+        requestQueue.add(multipartRequest);
+
+
+    }
+
     private void deleteTable() {
 
         String url = String.format(Urls.DELETE_TABLE, Table_No, payment_status);
@@ -422,6 +678,9 @@ public class Vendor_Price_List_Adapter extends RecyclerView.Adapter<Vendor_Price
         System.out.println("Sever Response " + url);
 
         final JSONArray jsonArray = new JSONArray();
+        ProgressDialog dialog = new ProgressDialog(context);
+        dialog.setMessage("Please wait.....");
+        dialog.show();
 
 
         VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, url,
@@ -435,7 +694,7 @@ public class Vendor_Price_List_Adapter extends RecyclerView.Adapter<Vendor_Price
 
                         if (result.contains("Success")) {
 
-
+                            dialog.dismiss();
                             Toast.makeText(context, "Data uploaded Successfully.", Toast.LENGTH_SHORT).show();
 
 //                    Deliveerd();
@@ -443,8 +702,8 @@ public class Vendor_Price_List_Adapter extends RecyclerView.Adapter<Vendor_Price
 //                    dataModelArrayList.remove(position);
 //                    notifyDataSetChanged();
 
-//                    Intent ieventreport = new Intent(context, HomeScreen.class);
-//                    context.startActivity(ieventreport);
+                            Intent ieventreport = new Intent(context, MainItemList.class);
+                            context.startActivity(ieventreport);
                         } else {
                             Toast.makeText(context, "Please check All info Carefully and try again.", Toast.LENGTH_SHORT).show();
                         }

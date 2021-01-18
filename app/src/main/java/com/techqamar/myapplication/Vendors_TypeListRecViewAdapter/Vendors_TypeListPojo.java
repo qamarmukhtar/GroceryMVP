@@ -17,12 +17,24 @@ public class Vendors_TypeListPojo {
     @SerializedName("logo")
     @Expose
     private String logo;
+    @SerializedName("store_id")
+    @Expose
+    private String store_id;
 
-    public Vendors_TypeListPojo(String name, String email_id, String sum,String logo) {
+    public Vendors_TypeListPojo(String name, String email_id, String sum,String logo,String store_id) {
         this.name = name;
         this.email_id = email_id;
         this.sum = sum;
         this.logo = logo;
+        this.store_id = store_id;
+    }
+
+    public String getStore_id() {
+        return store_id;
+    }
+
+    public void setStore_id(String store_id) {
+        this.store_id = store_id;
     }
 
     public String getLogo() {

@@ -3,6 +3,7 @@ package com.techqamar.myapplication;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.NetworkError;
 import com.android.volley.Request;
@@ -47,7 +49,8 @@ public class Vendors_Types extends AppCompatActivity {
     public String Username, UserPhno, Useremail, UserId;
 
     private StaggeredGridLayoutManager mLayoutManager;
-//    private LottieAnimationView tv_no_cards;
+    //    private LottieAnimationView tv_no_cards;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     Vendors_TypeListRecViewAdapter vendorsTypeListRecViewAdapter;
     ArrayList<Vendors_TypeListPojo> vendorsTypeListPojoArrayList = new ArrayList<>();
@@ -63,8 +66,27 @@ public class Vendors_Types extends AppCompatActivity {
         UserPhno = sh.getString("phoneno", "");
         Useremail = sh.getString("email", "");
         UserId = sh.getString("id", "");
+        mSwipeRefreshLayout = findViewById(R.id.swipe_container);
 
-        Table_No =UserPhno;
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to make your refresh action
+                // CallYourRefreshingMethod();
+                getGroceryStoreDetails();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mSwipeRefreshLayout.isRefreshing()) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        }
+                    }
+                }, 1000);
+            }
+        });
+
+        Table_No = UserPhno;
 
 //        imgBackButton = (ImageView) findViewById(R.id.imgBackButton);
 //        imgBackButton.setOnClickListener(new View.OnClickListener() {
@@ -110,8 +132,8 @@ public class Vendors_Types extends AppCompatActivity {
 
     private void getGroceryStoreDetails() {
 
-
-        String url = String.format(Urls.VENDOR_ITEMS_AVG_RATE_SUBMIT,Table_No);
+        vendorsTypeListPojoArrayList.clear();
+        String url = String.format(Urls.VENDOR_ITEMS_AVG_RATE_SUBMIT, Table_No);
 
         System.out.println("Sever Response " + url);
 
@@ -126,21 +148,6 @@ public class Vendors_Types extends AppCompatActivity {
                             JSONArray jsonArray = new JSONArray(response);
                             System.out.println("Sever Response jsonObject" + response);
 
-//                            JSONObject jsonObject = new JSONObject(response);
-//
-//                            System.out.println("Sever Response jsonObject" + response);
-//
-//                            JSONObject jsonObject1 = jsonObject.getJSONObject("user");
-////                            System.out.println("Sever Response jsonObject1" + jsonObject1);
-//
-//                            JsonStreamParser parser = new JsonStreamParser((response));
-//                            while (parser.hasNext()) {
-//                                JsonElement object = parser.next();
-//                                System.out.println("Sever JsonStreamParser" +object.getAsJsonObject().get("user"));
-//                            }
-
-//                            DcListPojo content[] = new Gson().fromJson(jsonArray.toString(), DcListPojo[].class);
-//                            ArrayList<DcListPojo> dataList = new ArrayList<DcListPojo>(Arrays.asList(content));
                             Vendors_TypeListPojo content[] = new Gson().fromJson(jsonArray.toString(), Vendors_TypeListPojo[].class);
                             ArrayList<Vendors_TypeListPojo> dataList = new ArrayList<Vendors_TypeListPojo>(Arrays.asList(content));
 
@@ -181,15 +188,6 @@ public class Vendors_Types extends AppCompatActivity {
                             Toast.makeText(Vendors_Types.this, "Bad Network Connection", Toast.LENGTH_SHORT).show();
 
 
-//                        String body = null;
-//                        try {
-//                            body = new String(error.networkResponse.data, "UTF-8");
-//                            Log.d("Error.Response", body);
-//
-//                        } catch (UnsupportedEncodingException e) {
-//                            e.printStackTrace();
-//                        }
-
                     }
                 }
         ) {
@@ -201,63 +199,7 @@ public class Vendors_Types extends AppCompatActivity {
             }
         };
 
-
-//        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
-//                new Response.Listener<String>()
-//                {
-//                    @Override
-//                    public void onResponse(String response) {
-//
-//                        System.out.println("Sever Response"+response);
-//
-//
-//                        GroceryListPojo content[] = new Gson().fromJson(jsonArray.toString(), GroceryListPojo[].class);
-//                        ArrayList<GroceryListPojo> dataList = new ArrayList<GroceryListPojo>(Arrays.asList(content));
-//
-//
-//                        groceryListPojoArrayList.addAll(dataList);
-//
-//                        groceryListRecViewAdapter.notifyDataSetChanged();
-//
-//                        if(groceryListPojoArrayList.size()==0){
-//
-//                            tv_no_cards.setVisibility(View.VISIBLE);
-//
-//                        }
-//
-//
-//
-//                    }
-//                },
-//                new Response.ErrorListener()
-//                {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//
-//
-//
-//                        String body = null;
-//                        try {
-//                            body = new String(error.networkResponse.data, "UTF-8");
-//                            Log.d("Error.Response", body);
-//
-//                        } catch (UnsupportedEncodingException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-//                }
-//        ) {
-//            @Override
-//            protected Map<String, String> getParams()
-//            {
-//                Map<String, String>  params = new HashMap<String, String>();
-//                return params;
-//            }
-//        };
-
         requestQueue.add(postRequest);
-
 
     }
 

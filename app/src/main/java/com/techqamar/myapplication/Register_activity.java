@@ -79,7 +79,7 @@ public class Register_activity extends AppCompatActivity {
 //
                     ADDRESS = (edtAddress.getText().toString() +"\n"+ edtCity.getText().toString() +"\n"+ edtPostalcode.getText().toString());
 
-                    CheckCredentials(edtemail.getText().toString(), ADDRESS, edtname.getText().toString(), edtnumber.getText().toString());
+                    CheckCredentials(edtemail.getText().toString(), ADDRESS, edtname.getText().toString(), edtnumber.getText().toString(),edtCity.getText().toString());
 //                }
 
             }
@@ -95,9 +95,9 @@ public class Register_activity extends AppCompatActivity {
     }
 
 
-    private void CheckCredentials(final String userName, final String Address, final String name, final String phoneno) {
+    private void CheckCredentials(final String userName, final String Address, final String name, final String phoneno ,final String City) {
 
-        String urlForLogin = String.format(Urls.REGISTRATION, name, userName, phoneno, Address);
+        String urlForLogin = String.format(Urls.REGISTRATION, name, userName, phoneno, Address,City);
 
         Log.e("url", "url" + urlForLogin);
 
