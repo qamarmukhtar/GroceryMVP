@@ -1,5 +1,6 @@
 package com.techqamar.myapplication.CartItem_list_adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -444,6 +445,7 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
 
                     Intent ieventreport = new Intent(context, MainItemList.class);
                     context.startActivity(ieventreport);
+                    ((Activity)context).finish();
                         } else {
                             Toast.makeText(context, "Please check All info Carefully and try again.", Toast.LENGTH_SHORT).show();
                         }

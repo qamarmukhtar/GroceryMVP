@@ -1,5 +1,6 @@
 package com.techqamar.myapplication.VendorPriceListAdapter;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -704,6 +705,7 @@ public class Vendor_Price_List_Adapter extends RecyclerView.Adapter<Vendor_Price
 
                             Intent ieventreport = new Intent(context, MainItemList.class);
                             context.startActivity(ieventreport);
+                            ((Activity)context).finish();
                         } else {
                             Toast.makeText(context, "Please check All info Carefully and try again.", Toast.LENGTH_SHORT).show();
                         }
