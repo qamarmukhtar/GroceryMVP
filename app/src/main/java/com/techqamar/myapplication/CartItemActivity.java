@@ -45,7 +45,7 @@ public class CartItemActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ImageView imgBackButton;
     RequestQueue requestQueue;
-    public String Username, UserPhno, Useremail, UserId;
+    public static  String Username, UserPhno, Useremail, UserId;
     public static Button Submit;
     public static TextView Total_Price_toolbar_text;
     private static String Table_No;
@@ -129,6 +129,9 @@ public class CartItemActivity extends AppCompatActivity {
 
     public static String table_no() {
         return Table_No;
+    }
+    public static String userid() {
+        return UserId;
     }
 
     public void getGroceryStoreDetails() {

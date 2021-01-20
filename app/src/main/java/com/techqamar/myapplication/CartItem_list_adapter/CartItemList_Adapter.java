@@ -62,6 +62,7 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
 
     double Total_Price = 0;
     String Table_No;
+    String UserId;
 
     public CartItemList_Adapter(ArrayList<CartItemList_Pojo> d, OnInvoiceOptionclicked onInvoiceOptionclicked) {
         this.mainItem_list_pojoArrayList = d;
@@ -71,6 +72,7 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
         option = new RequestOptions().centerCrop().placeholder(R.drawable.loading_shape).error(R.drawable.loading_shape);
 
         Table_No = CartItemActivity.table_no().trim();
+        UserId = CartItemActivity.userid().trim();
 
 
     }
@@ -417,7 +419,7 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
         System.out.println("JSON" + item_list);
 
 
-        String url = String.format(Urls.STORE_ITEMS_AVG_RATE_SUBMIT, Table_No, item_list);
+        String url = String.format(Urls.STORE_ITEMS_AVG_RATE_SUBMIT, Table_No, item_list,UserId);
 
         System.out.println("Sever Response " + url);
 

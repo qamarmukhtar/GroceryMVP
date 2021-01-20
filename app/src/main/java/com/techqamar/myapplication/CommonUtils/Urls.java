@@ -11,8 +11,8 @@ public class Urls {
     public static final String STORE_ITEMS_ADD = BASE_URL2 + "slide1/tbl_crtn_instg_val.php?id=%s&c_id=%s";
     public static final String STORE_ITEMS_DELETE = BASE_URL2 + "slide1/remove_item.php?t_id=%s&item_id=%s";
     public static final String STORE_ITEMS_AVG_RATE = BASE_URL2 + "slide2/list_view_of_items_cart.php?t_id=%s";
-    public static final String STORE_ITEMS_AVG_RATE_SUBMIT = BASE_URL2 + "slide2/updating_usr_price.php?c_id=%s&price_id=%s";
-    public static final String VENDOR_ITEMS_AVG_RATE_SUBMIT = BASE_URL2 + "slide3/ven123frm_admin.php?t_id=%s";
+    public static final String STORE_ITEMS_AVG_RATE_SUBMIT = BASE_URL2 + "slide2/updating_usr_price_according_to_city.php?c_id=%s&price_id=%s&user_id=%s";
+    public static final String VENDOR_ITEMS_AVG_RATE_SUBMIT = BASE_URL2 + "slide3/ven123frm_admin1.php?t_id=%s&user_id=%s";
     public static final String VENDOR_PRICE_LIST = BASE_URL2 + "slide3/showig_vendor_details.php?t_id=%s&mail=%s";
     public static final String ORDERED_LIST = BASE_URL2 + "slide5/order_history_according_to_date.php?cust_id=%s";
     public static final String ORDERED_ITEM_LIST = BASE_URL2 + "slide5/order_history_by_date.php?cust_id=%s&date=%s";
@@ -30,31 +30,6 @@ public class Urls {
     public static final String ORDER_HISTORY = BASE_URL2 + "slide5/dumping_items_to_order.php?cust_id=%s&store_id=%s&tbl_id=%s";
     public static final String ORDER_HISTORY_VENDOR_PRICE_UPDATE = BASE_URL2 + "slide5/vendor_price_from_temp.php?cust_id=%s&store_id=%s&tbl_id=%s&mail=%s&date=%s";
 
-
-
-
-
-    public static final String MILK_STORE = BASE_URL2 + "item_details.php?apicall=item_details";//done
-    public static final String STORE_ITEM_DETAILS = BASE_URL2 + "store_items.php?id=%s";
-    public static final String CART_ITEM_LIST = BASE_URL2 + "quantity_list.php?s_id=%s";
-    public static final String BANNER_IMAGES1 = BASE_URL2 + "Banner_img_by_id.php?id=1";
-    public static final String ORDER_DETAILS = BASE_URL2 + "active_service_users11.php?";
-    public static final String ITEM_DETAILS = BASE_URL2 + "milk_items.php?id=%s";//done
-    public static final String ORDER_LIST = BASE_URL2 + "Order_list.php?id=%s";
-    public static final String ORDER_DETAILS1 = BASE_URL2 + "active_service_users11.php?" +
-            "_id=%s" +
-            "&name=%s" +
-            "&mobile_no=%s" +
-            "&mail=%s" +
-            "&product=%s" +
-            "&price=%s" +
-            "&date_choosen=%s" +
-            "&end_date=%s" +
-            "&Total_amount=%s" +
-            "&payment_status=%s" +
-            "&delivery_location=%s" +
-            "&order_id=%s" +
-            "&ordered_date_time=%s";
 
 
 }

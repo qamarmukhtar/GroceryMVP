@@ -35,6 +35,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -194,7 +195,8 @@ public class Vendor_Price_List extends AppCompatActivity {
 
                             }
                             //  Total_Price_toolbar_text.setText(String.valueOf (" Total Price = "+Vendor_Total_Price));
-                            avrage_total_price.setText(String.valueOf(Avg_Total_Price));
+                            DecimalFormat df = new DecimalFormat("#.##");
+                            avrage_total_price.setText(df.format(Avg_Total_Price));
                             user_total_price.setText(String.valueOf(User_Total_Price));
                             vendor_total_price.setText(String.valueOf(Vendor_Total_Price));
 

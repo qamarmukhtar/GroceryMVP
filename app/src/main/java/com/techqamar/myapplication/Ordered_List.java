@@ -119,6 +119,8 @@ public class Ordered_List extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Ordered_List.this);
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
         recyclerView.setFocusable(false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(ordered_list_adapter);

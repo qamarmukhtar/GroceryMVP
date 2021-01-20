@@ -133,7 +133,7 @@ public class Vendors_Types extends AppCompatActivity {
     private void getGroceryStoreDetails() {
 
         vendorsTypeListPojoArrayList.clear();
-        String url = String.format(Urls.VENDOR_ITEMS_AVG_RATE_SUBMIT, Table_No);
+        String url = String.format(Urls.VENDOR_ITEMS_AVG_RATE_SUBMIT, Table_No,UserId);
 
         System.out.println("Sever Response " + url);
 

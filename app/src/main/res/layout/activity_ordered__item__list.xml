@@ -22,7 +22,7 @@
                 android:id="@+id/Category_toolbar_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Store"
+                android:text="Ordered Items"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 

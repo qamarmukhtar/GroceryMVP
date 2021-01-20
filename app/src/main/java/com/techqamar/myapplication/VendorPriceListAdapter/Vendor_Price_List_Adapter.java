@@ -121,6 +121,7 @@ public class Vendor_Price_List_Adapter extends RecyclerView.Adapter<Vendor_Price
 //        holder.user_price.setText("User Price " + user_price);
 //        holder.vendor_price.setText("Vendor Price " + vendor_price);
         holder.average_price.setText(avg_price);
+        holder.add_price.setText("Your Added Price");
         holder.user_price.setText(user_price);
         holder.vendor_price.setText(vendor_price);
         Picasso.get().load(imageUrl).fit().centerInside().into(holder.mImageView);
@@ -312,7 +313,7 @@ public class Vendor_Price_List_Adapter extends RecyclerView.Adapter<Vendor_Price
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView mImageView, slash1, slash2;
-        public TextView item_name, average_price, vendor_price, user_price;
+        public TextView item_name, average_price, vendor_price, user_price,add_price;
         public EditText add_Rate;
         Button Add_to_cart;
         View viewitem;
@@ -333,6 +334,7 @@ public class Vendor_Price_List_Adapter extends RecyclerView.Adapter<Vendor_Price
             user_price = itemView.findViewById(R.id.user_price);
             user_price.setVisibility(View.VISIBLE);
             average_price = itemView.findViewById(R.id.average_price);
+            add_price = itemView.findViewById(R.id.add_price);
             average_price_liner = itemView.findViewById(R.id.average_price_liner);
             average_price_liner.setVisibility(View.VISIBLE);
             vendor_price_liner = itemView.findViewById(R.id.vendor_price_liner);

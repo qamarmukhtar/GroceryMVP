@@ -26,7 +26,6 @@ public class Ordered_Item_List_Adapter extends RecyclerView.Adapter<Ordered_Item
     private Ordered_Item_List_Adapter.OnInvoiceOptionclicked onInvoiceOptionclicked;
     RequestOptions option;
     RequestQueue requestQueue;
-    double value = Double.parseDouble(null);
 
     String Table_No, store_id,email_id, compare_string;
 
@@ -59,15 +58,16 @@ public class Ordered_Item_List_Adapter extends RecyclerView.Adapter<Ordered_Item
         final String item_id = vendor_list_pojo.getItem_id();
         final String item_name = vendor_list_pojo.getItem_name();
         final String avg_price = vendor_list_pojo.getAvg_price();
-         value = Double.parseDouble(avg_price);
+//        double value = Double.parseDouble(vendor_list_pojo.getAvg_price());
         final String imageUrl = vendor_list_pojo.getmImageUrl();
 
         holder.item_name.setText(item_name);
 //        holder.average_price.setText("Average Price " + avg_price);
 //        holder.user_price.setText("User Price " + user_price);
 //        holder.vendor_price.setText("Vendor Price " + vendor_price);
-        DecimalFormat df = new DecimalFormat("#.##");
-        holder.average_price.setText( df.format(value));
+//        DecimalFormat df = new DecimalFormat("#.##");
+//        holder.average_price.setText( df.format(value));
+        holder.average_price.setText( avg_price);
         holder.below_average_price.setText("Final Price");
         Picasso.get().load(imageUrl).fit().centerInside().into(holder.mImageView);
 
