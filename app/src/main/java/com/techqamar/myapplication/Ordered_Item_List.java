@@ -48,7 +48,7 @@ public class Ordered_Item_List extends AppCompatActivity {
     public static String Username, UserPhno, Useremail, UserId, Useraddress;
     public static Button cod_online;
 
-    public static String email_id, store_id,date;
+    public static String email_id, store_id,order_id;
     double Vendor_Total_Price = 0;
     double User_Total_Price = 0;
     double Avg_Total_Price = 0;
@@ -80,7 +80,7 @@ public class Ordered_Item_List extends AppCompatActivity {
         Intent intent = getIntent();
         email_id = intent.getStringExtra("email_id");
         store_id = intent.getStringExtra("store_id");
-        date = intent.getStringExtra("date");
+        order_id = intent.getStringExtra("order_id");
 
         Total_Price_toolbar_text = findViewById(R.id.Total_Price_toolbar_text);
         avrage_total_price = findViewById(R.id.average_price);
@@ -157,7 +157,7 @@ public class Ordered_Item_List extends AppCompatActivity {
         ordered_Item_list_pojosPojoArrayList.clear();
 
 
-        String url = String.format(Urls.ORDERED_ITEM_LIST, UserId, date);
+        String url = String.format(Urls.ORDERED_ITEM_LIST, UserId, order_id);
 
         System.out.println("Sever Response " + url);
 

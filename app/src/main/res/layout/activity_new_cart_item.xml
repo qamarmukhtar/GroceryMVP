@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:id="@+id/stats"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/toolbarwrap"
@@ -12,29 +12,28 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
-            android:background="#ffff"
             android:id="@+id/Category_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            >
+            android:background="#ffff">
 
 
             <TextView
                 android:id="@+id/Category_toolbar_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:text="Cart Items Details"
                 android:textColor="@color/black"
-                android:text="Cart Items Details"/>
+                android:textSize="20sp" />
 
 
             <TextView
                 android:id="@+id/Total_Price_toolbar_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:text=""
                 android:textColor="@color/black"
-                android:text=""/>
+                android:textSize="20sp" />
 
 
         </androidx.appcompat.widget.Toolbar>
@@ -42,33 +41,31 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
-        android:layout_below="@id/toolbarwrap"
         android:id="@+id/activity_cart_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/toolbarwrap"
         android:orientation="vertical">
 
         <FrameLayout
-            android:padding="5dp"
-            android:layout_marginTop="10dp"
             android:id="@+id/frame_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="9.5">
+            android:layout_weight="9.5"
+            android:padding="5dp">
+
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
 
-
-
                 <androidx.recyclerview.widget.RecyclerView
 
                     android:id="@+id/recyclerview"
-                    android:scrollbars="vertical"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_width="match_parent"/>
+                    android:scrollbars="vertical" />
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
@@ -78,13 +75,12 @@
             android:id="@+id/submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/purple_700"
             android:text="Submit"
-            android:textColor="@color/white"
-            android:background="@color/purple_700"/>
+            android:textColor="@color/white" />
 
 
     </LinearLayout>
-
 
 
 </RelativeLayout>

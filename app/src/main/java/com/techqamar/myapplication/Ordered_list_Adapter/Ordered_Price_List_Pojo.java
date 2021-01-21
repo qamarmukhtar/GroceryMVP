@@ -16,12 +16,24 @@ public class Ordered_Price_List_Pojo {
     @SerializedName("date")
     @Expose
     private String date;
+@SerializedName("order_id")
+    @Expose
+    private String order_id;
 
-    public Ordered_Price_List_Pojo(String name, String location, String mImageUrl, String date) {
+    public Ordered_Price_List_Pojo(String name, String location, String mImageUrl, String date, String order_id) {
         this.name = name;
         this.location = location;
         this.mImageUrl = mImageUrl;
         this.date = date;
+        this.order_id = order_id;
+    }
+
+    public String getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(String order_id) {
+        this.order_id = order_id;
     }
 
     public Ordered_Price_List_Pojo() {

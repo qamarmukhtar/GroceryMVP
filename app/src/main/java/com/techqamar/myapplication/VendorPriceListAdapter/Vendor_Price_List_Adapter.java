@@ -73,7 +73,7 @@ public class Vendor_Price_List_Adapter extends RecyclerView.Adapter<Vendor_Price
     String UserAddress;
     String UserID;
     String DATE;
-    String pkid;
+    String order_id;
 
     String payment_status = "";
     String payment_status1 = "";
@@ -391,8 +391,8 @@ public class Vendor_Price_List_Adapter extends RecyclerView.Adapter<Vendor_Price
                             String name = result.getString("user");
                             Log.e("sever", name + " ");
                             Log.e("object", object + " ");
-                            pkid = object.getString("pk");
-                            Log.e("pk", pkid + " ");
+                            order_id = object.getString("order_id");
+                            Log.e("order_id", order_id + " ");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -531,7 +531,7 @@ public class Vendor_Price_List_Adapter extends RecyclerView.Adapter<Vendor_Price
     private void Order_History_Vendor_price_update() {
 
 
-        String url = String.format(Urls.ORDER_HISTORY_VENDOR_PRICE_UPDATE, UserId, store_id, Table_No, email_id, DATE);
+        String url = String.format(Urls.ORDER_HISTORY_VENDOR_PRICE_UPDATE, UserId, store_id, Table_No, email_id, DATE,order_id);
 
         System.out.println("Sever Response " + url);
 
@@ -606,7 +606,7 @@ public class Vendor_Price_List_Adapter extends RecyclerView.Adapter<Vendor_Price
 
     private void email_send() {
 
-        String url = String.format(Urls.EMAIL_SEND, UserID, store_id,pkid);
+        String url = String.format(Urls.EMAIL_SEND,order_id);
 
         System.out.println("Sever Response " + url);
 

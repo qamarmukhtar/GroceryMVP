@@ -37,6 +37,8 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.techqamar.myapplication.CartItem_list_adapter.CartItemList_Adapter;
+import com.techqamar.myapplication.CartItem_list_adapter.CartItemList_Pojo;
 import com.techqamar.myapplication.CommonUtils.Urls;
 import com.techqamar.myapplication.MainItem_list_Adapter.MainItemList_Adapter;
 import com.techqamar.myapplication.MainItem_list_Adapter.MainItemList_Pojo;
@@ -72,11 +74,17 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
 
     MainItemList_Adapter mainItem_list_adapter;
     ArrayList<MainItemList_Pojo> mainItem_list_pojosPojoArrayList = new ArrayList<>();
+    CartItemList_Adapter cartItem_list_adapter;
+    ArrayList<CartItemList_Pojo> cartItem_list_pojosPojoArrayList = new ArrayList<>();
+    double Total_Price = 0;
     private AppBarConfiguration mAppBarConfiguration;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+//        invalidateOptionsMenu();
 //        TextView textView = findViewById(R.id.Category_toolbar_text);
 //        textView.setText("Milk Packets");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -85,7 +93,7 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        View hView =  navigationView.getHeaderView(0);
+        View hView = navigationView.getHeaderView(0);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 //        mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -99,15 +107,11 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
         UserPhno = sh.getString("phoneno", "");
         Useremail = sh.getString("email", "");
         UserId = sh.getString("id", "");
-        System.out.println("UserId"+UserId);
+        System.out.println("UserId" + UserId);
 
-        Table_No =UserPhno;
+        Table_No = UserPhno;
 
         mSwipeRefreshLayout = findViewById(R.id.swipe_container);
-
-
-//        tv_no_cards = findViewById(R.id.tv_no_cards);
-
 
         Proceed = (Button) findViewById(R.id.proceed);
 
@@ -125,11 +129,12 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
                 // Your code to make your refresh action
                 // CallYourRefreshingMethod();
                 getGroceryStoreDetails();
+                getGroceryCartDetails();
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(mSwipeRefreshLayout.isRefreshing()) {
+                        if (mSwipeRefreshLayout.isRefreshing()) {
                             mSwipeRefreshLayout.setRefreshing(false);
                         }
                     }
@@ -158,6 +163,8 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
         recyclerView.setAdapter(mainItem_list_adapter);
 
         getGroceryStoreDetails();
+        getGroceryCartDetails();
+
     }
 
     public static String table_no() {
@@ -172,14 +179,13 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
 
         if (id == R.id.nav_home) {
             // Handle the camera action
-            startActivity( new Intent(MainItemList.this, MainItemList.class));
+            startActivity(new Intent(MainItemList.this, MainItemList.class));
+            finish();
 
-        }
-        else if (id == R.id.nav_cart) {
+        } else if (id == R.id.nav_cart) {
             startActivity(new Intent(MainItemList.this, CartItemActivity.class));
 
-        }
-        else if (id == R.id.nav_vendor) {
+        } else if (id == R.id.nav_vendor) {
             startActivity(new Intent(MainItemList.this, Vendors_Types.class));
 
         } else if (id == R.id.nav_ordered) {
@@ -194,8 +200,95 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
     }
 
 
+    public void getGroceryCartDetails() {
+//        invalidateOptionsMenu();
+        cartItem_list_pojosPojoArrayList.clear();
+        Total_Price = 0;
+
+
+        String url = String.format(Urls.STORE_ITEMS_AVG_RATE, UserPhno);
+
+        System.out.println("Sever Response " + url);
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+
+
+                            System.out.println("Sever Response jsonObject response" + response);
+
+                            JSONArray jsonArray = jsonObject.getJSONArray("user");
+                            System.out.println("Sever Response jsonArray user" + jsonArray);
+
+                            CartItemList_Pojo content[] = new Gson().fromJson(jsonArray.toString(), CartItemList_Pojo[].class);
+                            ArrayList<CartItemList_Pojo> dataList = new ArrayList<CartItemList_Pojo>(Arrays.asList(content));
+
+                            cartItem_list_pojosPojoArrayList.addAll(dataList);
+
+
+                            cart_count = cartItem_list_pojosPojoArrayList.size();
+
+                            if (cartItem_list_pojosPojoArrayList.size() == 0) {
+
+                                Toast.makeText(MainItemList.this, "List is empty", Toast.LENGTH_SHORT).show();
+
+//                                tv_no_cards.setVisibility(View.VISIBLE);
+
+                            } else {
+
+//                                tv_no_cards.setVisibility(View.INVISIBLE);
+
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(MainItemList.this, "List is empty Bad Response From Server", Toast.LENGTH_SHORT).show();
+//                            Total_Price_toolbar_text.setText(String.valueOf (" Total Price = "+"0"));
+                        }
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        if (error instanceof ServerError)
+                            Toast.makeText(MainItemList.this, "Server Error", Toast.LENGTH_SHORT).show();
+                        else if (error instanceof TimeoutError)
+                            Toast.makeText(MainItemList.this, "Connection Timed Out", Toast.LENGTH_SHORT).show();
+                        else if (error instanceof NetworkError)
+                            Toast.makeText(MainItemList.this, "Bad Network Connection", Toast.LENGTH_SHORT).show();
+
+
+                    }
+                }
+        ) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                return params;
+            }
+        };
+
+
+        requestQueue = Volley.newRequestQueue(MainItemList.this);
+        postRequest.setShouldCache(false);
+        requestQueue.add(postRequest);
+
+    }
+
+
     private void getGroceryStoreDetails() {
-        cart_count = 0;
+//        invalidateOptionsMenu();
+//        cart_count = 0;
         mainItem_list_pojosPojoArrayList.clear();
 
 
@@ -259,15 +352,6 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
                             Toast.makeText(MainItemList.this, "Bad Network Connection", Toast.LENGTH_SHORT).show();
 
 
-//                        String body = null;
-//                        try {
-//                            body = new String(error.networkResponse.data, "UTF-8");
-//                            Log.d("Error.Response", body);
-//
-//                        } catch (UnsupportedEncodingException e) {
-//                            e.printStackTrace();
-//                        }
-
                     }
                 }
         ) {
@@ -294,6 +378,7 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.menu_notification, menu);
 
         menuItem = menu.findItem(R.id.nav_notification);
@@ -316,9 +401,11 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
         badgeCounter = view.findViewById(R.id.badge_counter);
         if (cart_count == 0) {
             badgeCounter.setVisibility(View.GONE);
+            invalidateOptionsMenu();
         } else {
             badgeCounter.setVisibility(View.VISIBLE);
         }
+
         badgeCounter.setText(Integer.toString(cart_count));
 
         badgeCounter.setOnClickListener(new View.OnClickListener() {
@@ -352,7 +439,7 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainItemList.this, Vendors_Types.class));
-              //  finish();
+                //  finish();
             }
         });
         // set the pending notifications value
@@ -360,6 +447,7 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
 //        }
 
         return super.onCreateOptionsMenu(menu);
+
     }
 
     //
@@ -383,6 +471,4 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
                 .setAction("Action", null).show();
 
     }
-
-
 }

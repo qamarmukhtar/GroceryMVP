@@ -40,7 +40,7 @@
     <dimen name="nav_header_height">250dp</dimen>
 
     <dimen name="notification_icon_size">24dp</dimen>
-    <dimen name="badge_size">20dp</dimen>
+    <dimen name="badge_size">25dp</dimen>
 
 
     <dimen name="newsMoreTextSize">12sp</dimen>

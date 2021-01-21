@@ -83,6 +83,7 @@ public class Ordered_Price_List_Adapter extends RecyclerView.Adapter<Ordered_Pri
 
         final String name = vendor_list_pojo.getName();
         final String date = vendor_list_pojo.getDate();
+        final String order_id = vendor_list_pojo.getOrder_id();
         final String location = vendor_list_pojo.getLocation();
         final String imageUrl = vendor_list_pojo.getmImageUrl();
 
@@ -97,9 +98,9 @@ public class Ordered_Price_List_Adapter extends RecyclerView.Adapter<Ordered_Pri
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, Ordered_Item_List.class);
-                String DATE = date.replaceAll("[^0-9]","");
-                System.out.println("date replase"+DATE);
-                intent.putExtra("date",DATE);
+//                String DATE = date.replaceAll("[^0-9]","");
+//                System.out.println("date replase"+DATE);
+                intent.putExtra("order_id",order_id);
 //                intent.putExtra("actual_price",actual_price);
 //                intent.putExtra("item_name",item_name);
 //                intent.putExtra("s_id",s_id);

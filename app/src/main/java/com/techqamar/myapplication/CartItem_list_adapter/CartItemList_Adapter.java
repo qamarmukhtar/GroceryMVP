@@ -154,15 +154,17 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
 
                 if (entrVal != null && !entrVal.isEmpty()) {
                     if ((availCredit - five_percent) >= Double.parseDouble(entrVal)) {
-                        Toast.makeText(context, "pleas enter the same amount or up to 5% less amount  ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "pleas enter the same amount or up to 5% less amount", Toast.LENGTH_SHORT).show();
                      //   mainItem_list_pojoArrayList.get(position).setAdd_rate(average_price);
 
 
                         //  holder.add_Rate.setText(entrVal.substring(0, entrVal.length() - 1));
+                        return;
                     }
                     if (Double.parseDouble(average_price) < Double.parseDouble(entrVal)) {
-                        Toast.makeText(context, "pleas enter the same amount or Below Average Price  ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "pleas enter the same amount or Below Average Price", Toast.LENGTH_SHORT).show();
                         holder.add_Rate.setText(entrVal.substring(0, entrVal.length() - 1));
+                        return;
                     } else {
 
                         mainItem_list_pojoArrayList.get(position).setAdd_rate(holder.add_Rate.getText().toString());

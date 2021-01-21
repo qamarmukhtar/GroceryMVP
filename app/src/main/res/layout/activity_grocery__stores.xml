@@ -76,8 +76,6 @@
 
         <FrameLayout
             android:padding="5dp"
-
-            android:layout_marginTop="10dp"
             android:id="@+id/frame_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
