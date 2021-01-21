@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -130,8 +131,9 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
                 // CallYourRefreshingMethod();
                 getGroceryStoreDetails();
                 getGroceryCartDetails();
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable(){
+//                final Handler handler = new Handler();
+//                handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         if (mSwipeRefreshLayout.isRefreshing()) {
@@ -201,7 +203,7 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
 
 
     public void getGroceryCartDetails() {
-//        invalidateOptionsMenu();
+        invalidateOptionsMenu();
         cartItem_list_pojosPojoArrayList.clear();
         Total_Price = 0;
 
@@ -232,6 +234,7 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
 
 
                             cart_count = cartItem_list_pojosPojoArrayList.size();
+                            System.out.println("cart_count" + cart_count);
 
                             if (cartItem_list_pojosPojoArrayList.size() == 0) {
 
@@ -248,9 +251,11 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(MainItemList.this, "List is empty Bad Response From Server", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(MainItemList.this, "List is empty Bad Response From Server", Toast.LENGTH_SHORT).show();
 //                            Total_Price_toolbar_text.setText(String.valueOf (" Total Price = "+"0"));
+                            cart_count =0;
                         }
+
 
 
                     }
@@ -401,7 +406,7 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
         badgeCounter = view.findViewById(R.id.badge_counter);
         if (cart_count == 0) {
             badgeCounter.setVisibility(View.GONE);
-            invalidateOptionsMenu();
+//            invalidateOptionsMenu();
         } else {
             badgeCounter.setVisibility(View.VISIBLE);
         }
@@ -449,8 +454,6 @@ public class MainItemList extends AppCompatActivity implements AddorRemoveCallba
         return super.onCreateOptionsMenu(menu);
 
     }
-
-    //
 
 
     @Override

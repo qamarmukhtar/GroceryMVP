@@ -155,6 +155,9 @@ public class Vendor_Price_List extends AppCompatActivity {
 
     private void getGroceryStoreDetails() {
         Vendor_Price_list_pojosPojoArrayList.clear();
+        Avg_Total_Price=0;
+        User_Total_Price=0;
+        Vendor_Total_Price=0;
 
 
         String url = String.format(Urls.VENDOR_PRICE_LIST, Table_No, email_id);
