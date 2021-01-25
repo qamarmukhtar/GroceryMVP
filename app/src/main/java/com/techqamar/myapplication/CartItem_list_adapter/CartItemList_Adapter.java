@@ -29,6 +29,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.techqamar.myapplication.CartItemActivity;
@@ -154,7 +156,8 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
 
                 if (entrVal != null && !entrVal.isEmpty()) {
                     if ((availCredit - five_percent) >= Double.parseDouble(entrVal)) {
-                        Toast.makeText(context, "pleas enter the same amount or up to 5% less amount", Toast.LENGTH_SHORT).show();
+                        holder.add_Rate.setError("pleas enter the same amount or up to 5% less amount");
+//                        Toast.makeText(context, "pleas enter the same amount or up to 5% less amount", Toast.LENGTH_SHORT).show();
                      //   mainItem_list_pojoArrayList.get(position).setAdd_rate(average_price);
 
 
@@ -162,7 +165,8 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
                         return;
                     }
                     if (Double.parseDouble(average_price) < Double.parseDouble(entrVal)) {
-                        Toast.makeText(context, "pleas enter the same amount or Below Average Price", Toast.LENGTH_SHORT).show();
+                        holder.add_Rate.setError("pleas enter the same amount or Below Average Price");
+//                        Toast.makeText(context, "pleas enter the same amount or Below Average Price", Toast.LENGTH_SHORT).show();
                         holder.add_Rate.setText(entrVal.substring(0, entrVal.length() - 1));
                         return;
                     } else {
@@ -386,6 +390,7 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
         public ImageView mImageView, slash1;
         public TextView item_name, average_price;
         public EditText add_Rate;
+        public TextInputLayout textInputName;
         Button Add_to_cart, remove_from_cart;
         View viewitem;
         LinearLayout average_price_liner;
@@ -408,6 +413,8 @@ public class CartItemList_Adapter extends RecyclerView.Adapter<CartItemList_Adap
             remove_from_cart.setVisibility(View.VISIBLE);
             average_price_liner = itemView.findViewById(R.id.average_price_liner);
             average_price_liner.setVisibility(View.VISIBLE);
+            textInputName = itemView.findViewById(R.id.textInputName);
+            textInputName.setVisibility(View.VISIBLE);
 
 
         }
